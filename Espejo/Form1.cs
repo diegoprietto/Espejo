@@ -15,34 +15,23 @@ namespace Espejo
 {
     public partial class Form1 : Form
     {
-        //Archivo en memoria
-        MemoryMappedFile memoria;
-        
-        //Mutex para acceso concurrido
-        Mutex _mutex;
+        //Memoria compartida
+        MemoriaCompartida _memoriaCompartida;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btCrearArchivo_Click(object sender, EventArgs e)
         {
-            try {
-                //Abrir archivo
-                memoria = MemoryMappedFile.CreateOrOpen("testmap", 100);
-                btCrearArchivo.Enabled = false;
-                txLog.Text += "Archivo abierto o creado." + Environment.NewLine;
-            }
-            catch (Exception ex)
-            {
-                txLog.Text += "ERROR al intentar crear o abrir el archivo: " + ex.Message + Environment.NewLine;
-            }
+            String log = string.Empty;
+
+            _memoriaCompartida = new MemoriaCompartida("EspejoMem", "EspejoMutex", 100);
+            _memoriaCompartida.IniciarConexion(ref log);
+
+            //Log
+            txLog.Text += log + Environment.NewLine;
         }
 
         private void chActualizar_CheckedChanged(object sender, EventArgs e)
@@ -52,65 +41,25 @@ namespace Espejo
 
         private void btEscribir_Click(object sender, EventArgs e)
         {
-            try {
-                Byte[] buffer = Encoding.ASCII.GetBytes(txEntrada.Text);
+            String log = string.Empty;
 
-                _mutex.WaitOne();
+            _memoriaCompartida.EscribirEnMemoria(txEntrada.Text, ref log);
 
-                using (MemoryMappedViewStream stream = memoria.CreateViewStream())
-                {
-                    BinaryWriter writer = new BinaryWriter(stream);
-                    writer.Write(buffer);
-                }
-                _mutex.ReleaseMutex();
-            }
-            catch (Exception ex)
-            {
-                txLog.Text += "ERROR al intentar escribir en la memoria: " + ex.Message + Environment.NewLine;
-            }
+            //Log
+            txLog.Text += log + Environment.NewLine;
         }
 
         private void reloj_Tick(object sender, EventArgs e)
         {
-            try
-            {
-                _mutex.WaitOne();
+            String log = string.Empty;
+            String cadena;
 
-                byte[] cadena = new byte[100];
-                using (MemoryMappedViewStream stream = memoria.CreateViewStream())
-                {
-                    BinaryReader reader = new BinaryReader(stream);
+            _memoriaCompartida.LeerEnMemoria(out cadena, true, ref log);
 
-                    //Leer bytes
-                    stream.Read(cadena, 0, 100);
+            txEspejo.Text = cadena;
 
-                    //Escribir en textbox
-                    txEspejo.Text = ASCIIEncoding.ASCII.GetString(cadena);
-
-                }
-                _mutex.ReleaseMutex();
-            }
-            catch (Exception ex)
-            {
-                txLog.Text += "ERROR al intentar leer la memoria: " + ex.Message + Environment.NewLine;
-            }
-        }
-
-        private void btCrearMutex_Click(object sender, EventArgs e)
-        {
-            //Intentar crear o unirse a uno previamente creado
-            try
-            {
-                // Try to open existing mutex.
-                _mutex = Mutex.OpenExisting("testmapmutex");
-                txLog.Text += "Se abrió un Mutex existente." + Environment.NewLine;
-            }
-            catch
-            {
-                // If exception occurred, there is no such mutex.
-                _mutex = new Mutex(false, "testmapmutex");
-                txLog.Text += "No se encontró un Mutex existente, se creó uno." + Environment.NewLine;
-            }
+            //Log
+            txLog.Text += log + Environment.NewLine;
         }
     }
 }

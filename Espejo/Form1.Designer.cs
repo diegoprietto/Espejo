@@ -35,7 +35,6 @@
             this.reloj = new System.Windows.Forms.Timer(this.components);
             this.btEscribir = new System.Windows.Forms.Button();
             this.chActualizar = new System.Windows.Forms.CheckBox();
-            this.btCrearMutex = new System.Windows.Forms.Button();
             this.txLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
@@ -55,7 +54,7 @@
             this.btCrearArchivo.Name = "btCrearArchivo";
             this.btCrearArchivo.Size = new System.Drawing.Size(111, 34);
             this.btCrearArchivo.TabIndex = 1;
-            this.btCrearArchivo.Text = "Crear Archivo";
+            this.btCrearArchivo.Text = "Crear memoria";
             this.btCrearArchivo.UseVisualStyleBackColor = true;
             this.btCrearArchivo.Click += new System.EventHandler(this.btCrearArchivo_Click);
             // 
@@ -75,7 +74,7 @@
             // 
             // btEscribir
             // 
-            this.btEscribir.Location = new System.Drawing.Point(314, 111);
+            this.btEscribir.Location = new System.Drawing.Point(314, 71);
             this.btEscribir.Name = "btEscribir";
             this.btEscribir.Size = new System.Drawing.Size(111, 34);
             this.btEscribir.TabIndex = 2;
@@ -94,16 +93,6 @@
             this.chActualizar.UseVisualStyleBackColor = true;
             this.chActualizar.CheckedChanged += new System.EventHandler(this.chActualizar_CheckedChanged);
             // 
-            // btCrearMutex
-            // 
-            this.btCrearMutex.Location = new System.Drawing.Point(314, 71);
-            this.btCrearMutex.Name = "btCrearMutex";
-            this.btCrearMutex.Size = new System.Drawing.Size(111, 34);
-            this.btCrearMutex.TabIndex = 5;
-            this.btCrearMutex.Text = "Crear Mutex";
-            this.btCrearMutex.UseVisualStyleBackColor = true;
-            this.btCrearMutex.Click += new System.EventHandler(this.btCrearMutex_Click);
-            // 
             // txLog
             // 
             this.txLog.Location = new System.Drawing.Point(12, 259);
@@ -119,15 +108,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(736, 427);
             this.Controls.Add(this.txLog);
-            this.Controls.Add(this.btCrearMutex);
             this.Controls.Add(this.chActualizar);
             this.Controls.Add(this.btEscribir);
             this.Controls.Add(this.btCrearArchivo);
             this.Controls.Add(this.txEspejo);
             this.Controls.Add(this.txEntrada);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Espejo";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,7 +129,6 @@
         private System.Windows.Forms.Timer reloj;
         private System.Windows.Forms.Button btEscribir;
         private System.Windows.Forms.CheckBox chActualizar;
-        private System.Windows.Forms.Button btCrearMutex;
         private System.Windows.Forms.TextBox txLog;
     }
 }
