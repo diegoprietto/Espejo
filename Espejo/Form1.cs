@@ -18,6 +18,9 @@ namespace Espejo
         //Archivo en memoria
         MemoryMappedFile memoria;
         
+        //Mutex para acceso concurrido
+        Mutex _mutex;
+
         public Form1()
         {
             InitializeComponent();
@@ -30,9 +33,16 @@ namespace Espejo
 
         private void btCrearArchivo_Click(object sender, EventArgs e)
         {
-            //Abrir archivo
-            memoria = MemoryMappedFile.CreateNew("testmap", 10000);
-            btCrearArchivo.Enabled = false;
+            try {
+                //Abrir archivo
+                memoria = MemoryMappedFile.CreateOrOpen("testmap", 10000);
+                btCrearArchivo.Enabled = false;
+                txLog.Text += "Archivo abierto o creado." + Environment.NewLine;
+            }
+            catch (Exception ex)
+            {
+                txLog.Text += "ERROR al intentar crear o abrir el archivo: " + ex.Message + Environment.NewLine;
+            }
         }
 
         private void chActualizar_CheckedChanged(object sender, EventArgs e)
@@ -42,41 +52,70 @@ namespace Espejo
 
         private void btEscribir_Click(object sender, EventArgs e)
         {
-            Byte[] buffer = Encoding.ASCII.GetBytes(txEntrada.Text);
+            try {
+                Byte[] buffer = Encoding.ASCII.GetBytes(txEntrada.Text);
 
-            bool mutexCreated;
-            Mutex mutex = new Mutex(true, "testmapmutex", out mutexCreated);
+                _mutex.WaitOne();
 
-            mutex.WaitOne();
-
-            using (MemoryMappedViewStream stream = memoria.CreateViewStream())
-            {
-                BinaryWriter writer = new BinaryWriter(stream);
-                writer.Write(buffer);
+                using (MemoryMappedViewStream stream = memoria.CreateViewStream())
+                {
+                    BinaryWriter writer = new BinaryWriter(stream);
+                    writer.Write(buffer);
+                }
+                _mutex.ReleaseMutex();
             }
-            mutex.ReleaseMutex();
+            catch (Exception ex)
+            {
+                txLog.Text += "ERROR al intentar escribir en la memoria: " + ex.Message + Environment.NewLine;
+            }
         }
 
         private void reloj_Tick(object sender, EventArgs e)
         {
-            bool mutexCreated;
-            Mutex mutex = new Mutex(true, "testmapmutex", out mutexCreated);
-
-            mutex.WaitOne();
-
-            byte[] cadena = new byte[100];
-            using (MemoryMappedViewStream stream = memoria.CreateViewStream())
+            try
             {
-                BinaryReader reader = new BinaryReader(stream);
+                _mutex.WaitOne();
 
-                //Leer bytes
-                stream.Read(cadena, 0, 100);
+                byte[] cadena = new byte[100];
+                using (MemoryMappedViewStream stream = memoria.CreateViewStream())
+                {
+                    BinaryReader reader = new BinaryReader(stream);
 
-                //Escribir en textbox
-                txEspejo.Text = ASCIIEncoding.ASCII.GetString(cadena);
+                    //Leer bytes
+                    stream.Read(cadena, 0, 100);
 
+                    //Escribir en textbox
+                    txEspejo.Text = ASCIIEncoding.ASCII.GetString(cadena);
+
+                }
+                _mutex.ReleaseMutex();
             }
-            mutex.ReleaseMutex();
+            catch (Exception ex)
+            {
+                txLog.Text += "ERROR al intentar leer la memoria: " + ex.Message + Environment.NewLine;
+            }
+        }
+
+        private void btCrearMutex_Click(object sender, EventArgs e)
+        {
+            //Intentar crear o unirse a uno previamente creado
+            try
+            {
+                // Try to open existing mutex.
+                _mutex = Mutex.OpenExisting("testmapmutex");
+                txLog.Text += "Se abrió un Mutex existente." + Environment.NewLine;
+            }
+            catch
+            {
+                // If exception occurred, there is no such mutex.
+                _mutex = new Mutex(false, "testmapmutex");
+                txLog.Text += "No se encontró un Mutex existente, se creó uno." + Environment.NewLine;
+            }
+        }
+
+        private void btLiberarMutex_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

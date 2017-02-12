@@ -35,23 +35,26 @@
             this.reloj = new System.Windows.Forms.Timer(this.components);
             this.btEscribir = new System.Windows.Forms.Button();
             this.chActualizar = new System.Windows.Forms.CheckBox();
+            this.btCrearMutex = new System.Windows.Forms.Button();
+            this.txLog = new System.Windows.Forms.TextBox();
+            this.btLiberarMutex = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txEntrada
             // 
-            this.txEntrada.Location = new System.Drawing.Point(12, 88);
+            this.txEntrada.Location = new System.Drawing.Point(12, 31);
             this.txEntrada.MaxLength = 100;
             this.txEntrada.Multiline = true;
             this.txEntrada.Name = "txEntrada";
             this.txEntrada.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txEntrada.Size = new System.Drawing.Size(296, 380);
+            this.txEntrada.Size = new System.Drawing.Size(296, 222);
             this.txEntrada.TabIndex = 0;
             // 
             // btCrearArchivo
             // 
-            this.btCrearArchivo.Location = new System.Drawing.Point(314, 88);
+            this.btCrearArchivo.Location = new System.Drawing.Point(314, 31);
             this.btCrearArchivo.Name = "btCrearArchivo";
-            this.btCrearArchivo.Size = new System.Drawing.Size(210, 34);
+            this.btCrearArchivo.Size = new System.Drawing.Size(111, 34);
             this.btCrearArchivo.TabIndex = 1;
             this.btCrearArchivo.Text = "Crear Archivo";
             this.btCrearArchivo.UseVisualStyleBackColor = true;
@@ -59,22 +62,23 @@
             // 
             // txEspejo
             // 
-            this.txEspejo.Location = new System.Drawing.Point(530, 88);
+            this.txEspejo.Location = new System.Drawing.Point(431, 31);
             this.txEspejo.Multiline = true;
             this.txEspejo.Name = "txEspejo";
             this.txEspejo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txEspejo.Size = new System.Drawing.Size(296, 380);
+            this.txEspejo.Size = new System.Drawing.Size(296, 222);
             this.txEspejo.TabIndex = 4;
             // 
             // reloj
             // 
+            this.reloj.Interval = 1;
             this.reloj.Tick += new System.EventHandler(this.reloj_Tick);
             // 
             // btEscribir
             // 
-            this.btEscribir.Location = new System.Drawing.Point(314, 128);
+            this.btEscribir.Location = new System.Drawing.Point(314, 111);
             this.btEscribir.Name = "btEscribir";
-            this.btEscribir.Size = new System.Drawing.Size(210, 34);
+            this.btEscribir.Size = new System.Drawing.Size(111, 34);
             this.btEscribir.TabIndex = 2;
             this.btEscribir.Text = "Escribir en memoria";
             this.btEscribir.UseVisualStyleBackColor = true;
@@ -83,7 +87,7 @@
             // chActualizar
             // 
             this.chActualizar.AutoSize = true;
-            this.chActualizar.Location = new System.Drawing.Point(530, 65);
+            this.chActualizar.Location = new System.Drawing.Point(431, 8);
             this.chActualizar.Name = "chActualizar";
             this.chActualizar.Size = new System.Drawing.Size(107, 17);
             this.chActualizar.TabIndex = 3;
@@ -91,11 +95,43 @@
             this.chActualizar.UseVisualStyleBackColor = true;
             this.chActualizar.CheckedChanged += new System.EventHandler(this.chActualizar_CheckedChanged);
             // 
+            // btCrearMutex
+            // 
+            this.btCrearMutex.Location = new System.Drawing.Point(314, 71);
+            this.btCrearMutex.Name = "btCrearMutex";
+            this.btCrearMutex.Size = new System.Drawing.Size(111, 34);
+            this.btCrearMutex.TabIndex = 5;
+            this.btCrearMutex.Text = "Crear Mutex";
+            this.btCrearMutex.UseVisualStyleBackColor = true;
+            this.btCrearMutex.Click += new System.EventHandler(this.btCrearMutex_Click);
+            // 
+            // txLog
+            // 
+            this.txLog.Location = new System.Drawing.Point(12, 259);
+            this.txLog.Multiline = true;
+            this.txLog.Name = "txLog";
+            this.txLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txLog.Size = new System.Drawing.Size(715, 159);
+            this.txLog.TabIndex = 6;
+            // 
+            // btLiberarMutex
+            // 
+            this.btLiberarMutex.Location = new System.Drawing.Point(315, 151);
+            this.btLiberarMutex.Name = "btLiberarMutex";
+            this.btLiberarMutex.Size = new System.Drawing.Size(110, 33);
+            this.btLiberarMutex.TabIndex = 7;
+            this.btLiberarMutex.Text = "ReleaseMutex()";
+            this.btLiberarMutex.UseVisualStyleBackColor = true;
+            this.btLiberarMutex.Click += new System.EventHandler(this.btLiberarMutex_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 480);
+            this.ClientSize = new System.Drawing.Size(736, 427);
+            this.Controls.Add(this.btLiberarMutex);
+            this.Controls.Add(this.txLog);
+            this.Controls.Add(this.btCrearMutex);
             this.Controls.Add(this.chActualizar);
             this.Controls.Add(this.btEscribir);
             this.Controls.Add(this.btCrearArchivo);
@@ -117,6 +153,9 @@
         private System.Windows.Forms.Timer reloj;
         private System.Windows.Forms.Button btEscribir;
         private System.Windows.Forms.CheckBox chActualizar;
+        private System.Windows.Forms.Button btCrearMutex;
+        private System.Windows.Forms.TextBox txLog;
+        private System.Windows.Forms.Button btLiberarMutex;
     }
 }
 
