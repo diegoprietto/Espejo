@@ -35,7 +35,7 @@ namespace Espejo
         {
             try {
                 //Abrir archivo
-                memoria = MemoryMappedFile.CreateOrOpen("testmap", 10000);
+                memoria = MemoryMappedFile.CreateOrOpen("testmap", 100);
                 btCrearArchivo.Enabled = false;
                 txLog.Text += "Archivo abierto o creado." + Environment.NewLine;
             }
@@ -111,11 +111,6 @@ namespace Espejo
                 _mutex = new Mutex(false, "testmapmutex");
                 txLog.Text += "No se encontró un Mutex existente, se creó uno." + Environment.NewLine;
             }
-        }
-
-        private void btLiberarMutex_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

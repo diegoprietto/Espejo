@@ -37,7 +37,6 @@
             this.chActualizar = new System.Windows.Forms.CheckBox();
             this.btCrearMutex = new System.Windows.Forms.Button();
             this.txLog = new System.Windows.Forms.TextBox();
-            this.btLiberarMutex = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txEntrada
@@ -114,22 +113,11 @@
             this.txLog.Size = new System.Drawing.Size(715, 159);
             this.txLog.TabIndex = 6;
             // 
-            // btLiberarMutex
-            // 
-            this.btLiberarMutex.Location = new System.Drawing.Point(315, 151);
-            this.btLiberarMutex.Name = "btLiberarMutex";
-            this.btLiberarMutex.Size = new System.Drawing.Size(110, 33);
-            this.btLiberarMutex.TabIndex = 7;
-            this.btLiberarMutex.Text = "ReleaseMutex()";
-            this.btLiberarMutex.UseVisualStyleBackColor = true;
-            this.btLiberarMutex.Click += new System.EventHandler(this.btLiberarMutex_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(736, 427);
-            this.Controls.Add(this.btLiberarMutex);
             this.Controls.Add(this.txLog);
             this.Controls.Add(this.btCrearMutex);
             this.Controls.Add(this.chActualizar);
@@ -155,7 +143,6 @@
         private System.Windows.Forms.CheckBox chActualizar;
         private System.Windows.Forms.Button btCrearMutex;
         private System.Windows.Forms.TextBox txLog;
-        private System.Windows.Forms.Button btLiberarMutex;
     }
 }
 
